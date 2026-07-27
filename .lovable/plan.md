@@ -1,92 +1,58 @@
-# Metas individuais e por equipe (smart goals)
+# Remoção do módulo "medical"
 
-Evolução da tela `/metas` para suportar metas de grupo, novas métricas e sugestão inteligente de valor-alvo.
+O módulo está bem mais entrelaçado no CRM do que parece — não é só uma pasta isolada. Antes de sair apagando, precisamos alinhar o escopo, porque parte do que aparece como "medical" hoje é usado por telas do CRM principal (Pipelines, Contatos, Financeiro, Settings/Profissionais).
 
-## Modelo de dados
+## 1. Deleção direta (arquivos exclusivamente do módulo)
 
-**Nova tabela `team_goals`** (metas de equipe — convive com `user_goals` para individuais):
+- `src/components/medical/**` (dashboard, charts, kpis, insights, doctors, patients, marketing, appointments, layout)
+- `src/hooks/medical/**` (useMedicalCatalogs, Doctors, Procedures, Practice, KPIs, DashboardSeries, Insights, CrossInsights, PieBreakdowns)
+- `src/contexts/MedicalContext.tsx`
+- `src/services/medicalService.ts`
+- `src/types/medical.ts`
+- `src/components/settings/MedicalVerticalSettings.tsx`
+- `src/components/settings/medical/**` (ProceduresManager, InsurancesManager, FacilitiesManager, ImportProceduresDialog, exportProcedures)
+- `src/hooks/useLeadMedicalNotes.ts`, `src/hooks/useLeadProcedures.ts`
+- `src/components/pipelines/LeadMedicalCard.tsx`, `src/components/pipelines/LeadMedicalFields.tsx`
+- `src/components/pipelines/lead-detail-modal/LeadMedicalNotesSection.tsx`
+- `src/components/pipelines/lead-detail-modal/LeadMedicalAttachmentsSection.tsx`
+- `src/components/pipelines/lead-detail-modal/LeadProceduresSection.tsx`
 
-```text
-team_goals
-├── id, company_id, created_by, created_at, updated_at
-├── name              (texto curto: "Vendas SP - Janeiro")
-├── scope             ('company' | 'group' | 'pipeline')
-├── pipeline_id       (fk pipelines, quando scope='pipeline')
-├── group_id          (fk team_goal_groups, quando scope='group')
-├── metric            ('leads'|'value'|'conversions'|'ticket_avg'|'conversion_rate'|'response_time'|'messages_sent')
-├── target_value      numeric
-├── period_start, period_end   (datas livres — período personalizado)
-└── status            ('active'|'archived')
-```
+## 2. Edições para remover referências ao vertical medical
 
-**Nova tabela `team_goal_groups`** (squads/grupos customizados):
-- `id, company_id, name, color`
-- `team_goal_group_members (group_id, user_id)`
+- `src/App.tsx` — remover `MedicalProvider`, lazy `MedicalDashboard`, rota `/medical/dashboard`
+- `src/components/layout/AppSidebar.tsx` — remover item "Dashboard Médico", campo `vertical`, filtro `companyVertical`, ramificação `brand.isMedical`
+- `src/components/layout/RouteSuspenseFallback.tsx` — remover check `/medical/dashboard`
+- `src/pages/Settings.tsx` — remover imports/tabs de Convênios, Procedimentos, Hospitais, MedicalVerticalSettings; remover flag `isMedical`/`medical`
+- `src/components/settings/appointments/ProfessionalsSettings.tsx` — colapsar branches `isMedical` (remover campos CRM/council_type/bio quando exclusivos do médico) — manter versão "padrão"
+- `src/pages/AdminCompanies.tsx` — remover select de vertical (padrão/medical)
+- `src/hooks/useCompanyVertical.ts` — remover (ou retornar sempre 'standard'; melhor: remover e ajustar consumidores)
+- `src/hooks/useBrand.ts` — simplificar para sempre retornar marca `zapfy`, remover `isMedical` e `Stethoscope`
+- `src/components/auth/BrandMark.tsx` — remover ramificação `isMedical`
+- `src/components/crm/CrmLeadCard.tsx` — remover bloco `isMedical` (médico/procedimento) e campos `medical_doctor_name`/`medical_procedure_name`
+- `src/hooks/usePipelines.ts` — remover campos e joins `medical_doctor_id`/`medical_procedure_id`/`medical_doctors`/`medical_procedures` do select de leads
+- `src/hooks/useRealtimePipeline.ts` — remover subscription em `medical_procedures`
+- `src/hooks/useReportsRealtime.ts` — remover referências medical
+- `src/hooks/useAppointmentProfessionals.ts` — remover campo `medical_doctor_id`
+- `src/hooks/useLeadAttachments.ts` — remover categoria `'medical'` (manter apenas `'general'`)
+- `src/hooks/useLeads.ts`, `src/hooks/useContacts.ts` — remover campos `medical_*`/`medical_patient_id` do tipo/select
+- `src/components/contacts/ContactDrawer.tsx` — remover aba "Clínico"
+- `src/components/financeiro/BudgetDetailDrawer.tsx` — remover uso de `useMedicalInsurances` (o seletor de convênio some)
+- `src/components/pipelines/lead-detail-modal/LeadDetailModal.tsx` e `LeadInfoSection.tsx` — remover as seções médicas removidas
+- `src/pages/pipelines/usePipelineFilters.ts`, `PipelinesHeader.tsx`, `PipelineFilterPanel.tsx` — remover filtros médicos
 
-**Extensão `user_goals.goal_type`** — adicionar as 4 novas métricas no enum/check: `ticket_avg`, `conversion_rate`, `response_time`, `messages_sent`.
+## 3. O que **não** vou tocar (fora de escopo pedido)
 
-GRANTs + RLS por `company_id` em todas (admin gerencia, agente lê metas que o incluem).
+- **Nenhuma migration do Supabase será deletada.** Você pediu para só remover tabelas exclusivas do módulo, mas várias tabelas "medical_*" estão referenciadas por FKs em tabelas centrais do CRM (`leads.medical_doctor_id`, `leads.medical_procedure_id`, `contacts.medical_patient_id`, `lead_procedures.medical_procedure_id`, `appointment_professionals.medical_doctor_id`, `financial_entries` via convênios, etc). Dropar essas tabelas exige uma migration cuidadosa que também remove as colunas/FKs dependentes. Recomendo tratar isso numa etapa 2 dedicada, depois que o frontend estiver limpo e você confirmar que não há dados em produção que dependam disso. Se você topar, faço a migration no próximo passo.
+- Edge functions em `supabase/functions/` que mencionem `medical_*` — mesmo motivo: só removo depois de decidirmos a migration.
 
-## Cálculo de progresso
+## 4. Verificação final
 
-Estender `useGoalProgress` (hoje só lê `leads`) para suportar todas as métricas:
+Após as edições:
+- `rg -n "medical|Medical" src/` para garantir 0 referências residuais no frontend
+- `tsgo` (typecheck) para pegar imports quebrados
 
-| Métrica | Fonte |
-|---|---|
-| `leads` | `leads` count no período |
-| `value` | soma `leads.value` no período |
-| `conversions` | `leads` where status='won' |
-| `ticket_avg` | avg(`leads.value`) where status='won' |
-| `conversion_rate` | won ÷ total × 100 |
-| `response_time` | avg seg entre `created_at` e `responded_at` (média BAIXA é melhor — inverter barra) |
-| `messages_sent` | count `chat_messages` direction='outbound' |
+## Detalhes técnicos
 
-Criar **RPC `get_goal_progress(metric, scope, scope_id, period_start, period_end)`** que retorna valor atual + meta — usado tanto por metas individuais quanto de equipe.
+Impacto principal: `useCompanyVertical` some, então todo consumidor precisa assumir vertical padrão. Isso é o gatilho da maior parte das edições em cascata (CrmLeadCard, ContactDrawer, Settings, ProfessionalsSettings, BrandMark, AppSidebar). O tipo `Lead`/`Contact` perde os campos `medical_*` — os selects Supabase precisam ser atualizados junto, senão o PostgREST devolve erro em runtime mesmo com o TS passando.
 
-## Sugestão automática de alvo (smart)
-
-Nova **RPC `suggest_goal_target(metric, scope, scope_id, period_days)`**:
-- Calcula média dos últimos 3 períodos equivalentes (ex: 3 meses anteriores)
-- Retorna `{ baseline, suggested_conservative (-10%), suggested_realistic (+0%), suggested_aggressive (+30%) }`
-
-No dialog de criação, ao escolher métrica + escopo + período, mostra 3 chips clicáveis ("Conservadora R$ 45k", "Realista R$ 50k", "Agressiva R$ 65k") + campo manual.
-
-## UI
-
-**`/metas` ganha tabs internas no painel esquerdo**: `Individuais` | `Equipe`
-
-- **Nova meta** (dropdown) ganha 3 opções: Individual / Equipe / Missão.
-- **Dialog `CreateTeamGoalDialog`** (novo):
-  - Nome
-  - Escopo: radio (Empresa toda / Grupo / Pipeline) → mostra select correspondente
-  - Botão "Gerenciar grupos" abre `GoalGroupsManager` (CRUD de grupos + membros)
-  - Métrica (7 opções com ícones)
-  - Período: `DateRangePicker` (livre)
-  - Alvo: 3 chips sugeridos + input manual com `CurrencyInput`/`NumberInput` conforme métrica
-- **Dialog individual existente** ganha as novas métricas e os mesmos chips de sugestão.
-- **`GoalsListPanel`** renderiza cards diferenciados por escopo (ícone + badge "Empresa" / "Squad SP" / "Funil Vendas") com barra de progresso adequada por métrica.
-
-## Arquivos
-
-Novos:
-- `supabase/migrations/<ts>_team_goals.sql` (tabelas + grants + RLS + RPCs)
-- `src/hooks/useTeamGoals.ts`
-- `src/hooks/useGoalGroups.ts`
-- `src/hooks/useGoalSuggestion.ts`
-- `src/components/goals/CreateTeamGoalDialog.tsx`
-- `src/components/goals/GoalGroupsManager.tsx`
-- `src/components/goals/SmartTargetSuggestion.tsx`
-
-Editados:
-- `src/pages/Goals.tsx` — tabs Individuais/Equipe + nova opção no dropdown
-- `src/components/goals/CreateGoalFromGoalsDialog.tsx` — novas métricas + chips de sugestão
-- `src/components/goals/GoalsListPanel.tsx` — render por escopo
-- `src/hooks/useGoalProgress.ts` — usar RPC unificada
-- `src/hooks/useUserGoals.ts` — tipos atualizados
-
-## Fora de escopo (não entregue agora)
-
-- Recorrência automática / templates de meta / divisão automática entre agentes (podem ser fase 2)
-- Períodos pré-definidos (semanal/mensal/trimestral) — apenas Personalizado por enquanto, com shortcuts no DateRangePicker
-
-Aprove o plano para eu seguir com a migração e a implementação.
+Confirma esse escopo? Em especial: (a) posso simplificar `ProfessionalsSettings` para a versão "padrão" (perde CRM/conselho/bio), e (b) devo deixar as tabelas `medical_*` no banco por enquanto?
