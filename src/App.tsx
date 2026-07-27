@@ -95,7 +95,7 @@ const App = () => (
     <UIScaleProvider>
     <AuthProvider>
       <PresenceMount />
-      <MedicalProvider>
+      
       <RealtimeProvider>
       <BrandingProvider>
       <TooltipProvider>
@@ -130,7 +130,7 @@ const App = () => (
                 <Route path="/oportunidades" element={<Navigate to="/pipelines?view=kanban" replace />} />
                 <Route path="/oportunidades/:pipelineId" element={<Navigate to="/pipelines?view=kanban" replace />} />
                 <Route path="/leads" element={<Navigate to="/pipelines?view=list" replace />} />
-                <Route path="/medical/dashboard" element={<MedicalDashboard />} />
+                
               </Route>
 
               <Route element={<RequireRole roles={['company_admin', 'user']} />}>
@@ -215,7 +215,7 @@ const App = () => (
       </TooltipProvider>
       </BrandingProvider>
       </RealtimeProvider>
-      </MedicalProvider>
+      
     </AuthProvider>
     </UIScaleProvider>
     </ThemeProvider>
