@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Save, Loader2, Trophy, XCircle, RotateCcw, Info, Stethoscope, History, Plus, User, Tag, Paperclip } from 'lucide-react';
+import { Save, Loader2, Trophy, XCircle, RotateCcw, Info, History, Plus, Tag } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -7,19 +7,15 @@ import { useCreateLead, useUpdateLead } from '@/hooks/useLeads';
 import { useTeamMembers } from '@/hooks/useTeamMembers';
 import { useCreateLeadActivity } from '@/hooks/useLeadActivities';
 import { useLeadOutcome } from '@/hooks/useLeadOutcome';
-import { useCompanyVertical } from '@/hooks/useCompanyVertical';
 import { LeadOutcomeDialog } from '../LeadOutcomeDialog';
-import { LeadMedicalCard } from '../LeadMedicalCard';
 import { useFullLeadData } from './hooks';
 import { LeadHeader } from './LeadHeader';
 import { LeadInfoSection } from './LeadInfoSection';
 import { LeadTagsSection } from './LeadTagsSection';
-import { LeadProceduresSection } from './LeadProceduresSection';
-import { LeadMedicalNotesSection } from './LeadMedicalNotesSection';
-import { LeadMedicalAttachmentsSection } from './LeadMedicalAttachmentsSection';
 import { HistoryTab } from './HistoryTab';
 import { ClosedLeadBanner } from './ClosedLeadBanner';
 import { toast } from 'sonner';
+
 
 export interface LeadDetailModalProps {
   open: boolean;
