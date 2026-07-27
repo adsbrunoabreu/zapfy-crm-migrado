@@ -51,7 +51,7 @@ const EMPTY = {
   insurance_card_number: '' as string,
 };
 
-type TabKey = 'info' | 'tags' | 'attachments' | 'medical' | 'history';
+type TabKey = 'info' | 'tags' | 'history';
 
 export function LeadDetailModal({
   open,
@@ -70,8 +70,7 @@ export function LeadDetailModal({
   const [outcomeDialog, setOutcomeDialog] = useState<{ open: boolean; mode: 'won' | 'lost' }>({ open: false, mode: 'won' });
   const [tab, setTab] = useState<TabKey>('info');
 
-  const { data: vertical } = useCompanyVertical();
-  const isMedical = vertical === 'medical';
+  const isMedical = false;
   const { data: fullLead } = useFullLeadData(lead?.id || null);
   const { data: teamMembers } = useTeamMembers();
   const updateLead = useUpdateLead();
