@@ -47,9 +47,6 @@ const Automations = lazy(lazyWithRetry(() => import("./pages/Automations")));
 const AutomationNotifications = lazy(lazyWithRetry(() => import("./pages/AutomationNotifications")));
 const Store = lazy(lazyWithRetry(() => import("./pages/Store")));
 const ProviderSetup = lazy(lazyWithRetry(() => import("./pages/Setup/ProviderSetup")));
-const MedicalDashboard = lazy(lazyWithRetry(() =>
-  import("@/components/medical/dashboard/MedicalDashboard").then((m) => ({ default: m.MedicalDashboard }))
-));
 
 const Team = lazy(lazyWithRetry(() => import("./pages/Team")));
 const Goals = lazy(lazyWithRetry(() => import("./pages/Goals")));
