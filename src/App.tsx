@@ -18,7 +18,7 @@ const PresenceMount = () => {
   return null;
 };
 import { UIScaleProvider } from "@/contexts/UIScaleContext";
-import { MedicalProvider } from "@/contexts/MedicalContext";
+
 import { GlobalErrorBoundary } from "@/components/common/GlobalErrorBoundary";
 
 // Eager: rota pública / (LCP). Tudo o mais é lazy para não inflar o bundle inicial.
