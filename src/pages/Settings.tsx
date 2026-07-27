@@ -69,11 +69,7 @@ import DemoDataCard from '@/components/settings/DemoDataCard';
 import TagsManager from '@/components/settings/TagsManager';
 import LossReasonsManager from '@/components/settings/LossReasonsManager';
 import LeadSourcesManager from '@/components/settings/LeadSourcesManager';
-import MedicalVerticalSettings from '@/components/settings/MedicalVerticalSettings';
 import NotificationPrefsCard from '@/components/settings/NotificationPrefsCard';
-import InsurancesManager from '@/components/settings/medical/InsurancesManager';
-import ProceduresManager from '@/components/settings/medical/ProceduresManager';
-import FacilitiesManager from '@/components/settings/medical/FacilitiesManager';
 import ProductsManager from '@/components/settings/ProductsManager';
 import { supabase } from '@/integrations/supabase/client';
 import { SettingsSkeleton } from '@/components/skeletons/PageSkeletons';
@@ -324,7 +320,6 @@ export default function Settings() {
     { id: 'professionals', label: 'Profissionais', icon: Stethoscope, render: () => <ProfessionalsSettings /> },
     { id: 'appointment-reasons', label: 'Motivos de agendamento', icon: CalendarClock, render: () => <ReasonsSettings /> },
   ];
-  if (isMedical) {
     catalogs.push(
       { id: 'insurances', label: 'Convênios', icon: ShieldPlus, medical: true, render: () => <InsurancesManager /> },
       { id: 'procedures', label: 'Procedimentos', icon: ListTree, medical: true, render: () => <ProceduresManager /> },
