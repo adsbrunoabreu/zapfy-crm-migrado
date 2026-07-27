@@ -10,5 +10,6 @@ export function useAddLeadProduct() {
 }
 
 export function useRemoveLeadProcedure() {
-  return useMutation({ mutationFn: async (_: string) => null });
+  return useMutation({ mutationFn: async (_: any) => null });
 }
+
