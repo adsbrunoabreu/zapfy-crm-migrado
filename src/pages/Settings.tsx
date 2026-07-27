@@ -585,14 +585,6 @@ export default function Settings() {
           <NotificationSoundSettings />
 
 
-          {/* Vertical médica: opt-in */}
-          <Card className="glass-card p-6 space-y-4">
-            <div className="flex items-center gap-2">
-              <Stethoscope className="w-5 h-5 text-primary" />
-              <h2 className="font-display text-lg font-semibold">Vertical / Clínica</h2>
-            </div>
-            <MedicalVerticalSettings />
-          </Card>
 
           {/* Zona de Perigo */}
           <Card className="glass-card p-6 border-destructive/30">
