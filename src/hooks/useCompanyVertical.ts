@@ -1,5 +1,4 @@
-// Medical vertical was removed. This stub keeps existing call sites compiling;
-// vertical is always 'standard' now.
-export function useCompanyVertical() {
-  return { data: 'standard' as const, isLoading: false };
+// Medical vertical was removed. Stub kept so existing consumers still type-check.
+export function useCompanyVertical(): { data: string; isLoading: boolean } {
+  return { data: 'standard', isLoading: false };
 }
