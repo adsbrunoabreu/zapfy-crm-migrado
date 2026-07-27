@@ -75,7 +75,7 @@ const navSections: NavSection[] = [
     label: 'Operacional',
     items: [
       { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-      { icon: Stethoscope, label: 'Dashboard Médico', path: '/medical/dashboard', roles: ['master', 'admin', 'gestor', 'financeiro', 'agente'], vertical: 'medical' },
+      
       { icon: Kanban, label: 'Pipelines', path: '/pipelines', roles: ['master', 'admin', 'gestor', 'financeiro', 'agente'] },
       { icon: Users, label: 'Contatos', path: '/contatos', roles: ['master', 'admin', 'gestor', 'financeiro', 'agente'] },
       { icon: MessageSquare, label: 'Chat', path: '/chat', roles: ['master', 'admin', 'gestor', 'financeiro', 'agente'], badgeKey: 'chat-unread' },
@@ -291,14 +291,10 @@ export function AppSidebar() {
         <div className="px-3 py-4 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2.5 overflow-hidden">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shrink-0 shadow-[0_0_18px_-6px_hsl(var(--primary))]">
-              {brand.isMedical ? (
-                <brand.Icon className="w-4 h-4 text-primary-foreground" strokeWidth={2.5} />
-              ) : (
-                <brand.Icon className="w-4 h-4 text-primary-foreground fill-primary-foreground" strokeWidth={2.5} />
-              )}
+              <brand.Icon className="w-4 h-4 text-primary-foreground fill-primary-foreground" strokeWidth={2.5} />
             </div>
             {!isCollapsed && (
-              <span className={cn('font-display text-base font-bold tracking-tight truncate text-foreground', !brand.isMedical && 'lowercase')}>
+              <span className="font-display text-base font-bold tracking-tight truncate text-foreground lowercase">
                 {brand.displayName}
               </span>
             )}
