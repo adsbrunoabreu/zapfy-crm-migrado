@@ -265,22 +265,6 @@ export function LeadDetailModal({
               )}
               {!isCreating && (
                 <TabsTrigger
-                  value="attachments"
-                  className="data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-none text-muted-foreground rounded-b-none rounded-t-md border border-transparent data-[state=active]:border-border data-[state=active]:border-b-card -mb-px px-3 py-2 text-xs font-medium gap-1.5"
-                >
-                  <Paperclip className="w-3.5 h-3.5 text-primary" /> Anexos
-                </TabsTrigger>
-              )}
-              {isMedical && (
-                <TabsTrigger
-                  value="medical"
-                  className="data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-none text-muted-foreground rounded-b-none rounded-t-md border border-transparent data-[state=active]:border-border data-[state=active]:border-b-card -mb-px px-3 py-2 text-xs font-medium gap-1.5"
-                >
-                  <Stethoscope className="w-3.5 h-3.5 text-primary" /> Dados Médicos
-                </TabsTrigger>
-              )}
-              {!isCreating && (
-                <TabsTrigger
                   value="history"
                   className="data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-none text-muted-foreground rounded-b-none rounded-t-md border border-transparent data-[state=active]:border-border data-[state=active]:border-b-card -mb-px px-3 py-2 text-xs font-medium gap-1.5"
                 >
@@ -316,40 +300,7 @@ export function LeadDetailModal({
             )}
 
             {!isCreating && (
-              <TabsContent value="attachments" className="m-0 px-5 py-5 space-y-5">
-                <LeadMedicalAttachmentsSection leadId={lead!.id} locked={isClosed} />
-              </TabsContent>
-            )}
 
-            {isMedical && (
-              <TabsContent value="medical" className="m-0 px-5 py-5 space-y-5">
-                <LeadMedicalCard
-                  values={{
-                    medical_doctor_id: edited.medical_doctor_id,
-                    medical_procedure_id: edited.medical_procedure_id,
-                    insurance_id: edited.insurance_id,
-                    facility_id: edited.facility_id,
-                    insurance_card_number: edited.insurance_card_number,
-                  }}
-                  onChange={(field, value) => updateField(field, value)}
-                  hideProcedure={!isCreating}
-                  disabled={!isCreating && isClosed}
-                />
-                {!isCreating && (
-                  <>
-                    <LeadProceduresSection leadId={lead!.id} locked={isClosed} />
-                    <LeadMedicalNotesSection leadId={lead!.id} locked={isClosed} />
-                  </>
-                )}
-                {isCreating && (
-                  <p className="text-xs text-muted-foreground">
-                    Procedimentos e notas clínicas ficam disponíveis após criar o lead.
-                  </p>
-                )}
-              </TabsContent>
-            )}
-
-            {!isCreating && (
               <TabsContent value="history" className="m-0 px-5 py-5 space-y-4">
                 <HistoryTab leadId={lead!.id} />
               </TabsContent>
