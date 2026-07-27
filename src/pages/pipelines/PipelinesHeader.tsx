@@ -5,10 +5,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { FilterPopoverButton } from '@/components/filters/FilterPopoverButton';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { OpportunityViewToggle } from '@/components/opportunities/OpportunityViewToggle';
-import { useCompanyVertical } from '@/hooks/useCompanyVertical';
-import { useMedical } from '@/contexts/MedicalContext';
-import { useMedicalDoctors } from '@/hooks/medical/useMedicalDoctors';
-import { useMedicalProcedures } from '@/hooks/medical/useMedicalProcedures';
 import { PipelineFilterPanel } from './PipelineFilterPanel';
 import type { PipelineFilters } from './usePipelineFilters';
 
@@ -41,20 +37,9 @@ export const PipelinesHeader = memo(function PipelinesHeader({
   onNewLead, onManagePipeline, onNewPipeline, canAddPipeline, pipelineBlockedReason,
 }: Props) {
   const isMock = selectedPipelineId?.startsWith('mock-');
-  const { data: vertical } = useCompanyVertical();
-  const isMedical = vertical === 'medical';
-  const { currentPractice } = useMedical();
-  const practiceId = isMedical ? currentPractice?.id ?? null : null;
-  const { data: doctors } = useMedicalDoctors(practiceId);
-  const { data: procedures = [] } = useMedicalProcedures(practiceId);
-
-  const doctorOptions = (doctors ?? []).map((d) => ({ id: d.id, name: d.full_name }));
-  const procedureOptions = procedures.map((p) => ({ id: p.id, name: p.name }));
 
   const title = selectedPipelineName ? `Pipeline ${selectedPipelineName}` : 'Pipelines';
-  const subtitle = isMedical
-    ? 'Gerencie as fichas dos seus pacientes'
-    : 'Gerencie seus leads através do funil de vendas';
+  const subtitle = 'Gerencie seus leads através do funil de vendas';
 
   return (
     <div className="px-6 lg:px-8 py-4 border-b border-border/30 shrink-0 bg-crm-column-header backdrop-blur-sm">
@@ -76,9 +61,9 @@ export const PipelinesHeader = memo(function PipelinesHeader({
               onSelectPipeline={onSelectPipeline}
               teamMembers={teamMembers}
               tags={tags}
-              doctors={doctorOptions}
-              procedures={procedureOptions}
-              showMedicalFilters={isMedical}
+              doctors={[]}
+              procedures={[]}
+              showMedicalFilters={false}
             />
           </FilterPopoverButton>
 

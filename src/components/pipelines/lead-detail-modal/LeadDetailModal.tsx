@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Save, Loader2, Trophy, XCircle, RotateCcw, Info, Stethoscope, History, Plus, User, Tag, Paperclip } from 'lucide-react';
+import { Save, Loader2, Trophy, XCircle, RotateCcw, Info, History, Plus, Tag } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -7,19 +7,15 @@ import { useCreateLead, useUpdateLead } from '@/hooks/useLeads';
 import { useTeamMembers } from '@/hooks/useTeamMembers';
 import { useCreateLeadActivity } from '@/hooks/useLeadActivities';
 import { useLeadOutcome } from '@/hooks/useLeadOutcome';
-import { useCompanyVertical } from '@/hooks/useCompanyVertical';
 import { LeadOutcomeDialog } from '../LeadOutcomeDialog';
-import { LeadMedicalCard } from '../LeadMedicalCard';
 import { useFullLeadData } from './hooks';
 import { LeadHeader } from './LeadHeader';
 import { LeadInfoSection } from './LeadInfoSection';
 import { LeadTagsSection } from './LeadTagsSection';
-import { LeadProceduresSection } from './LeadProceduresSection';
-import { LeadMedicalNotesSection } from './LeadMedicalNotesSection';
-import { LeadMedicalAttachmentsSection } from './LeadMedicalAttachmentsSection';
 import { HistoryTab } from './HistoryTab';
 import { ClosedLeadBanner } from './ClosedLeadBanner';
 import { toast } from 'sonner';
+
 
 export interface LeadDetailModalProps {
   open: boolean;
@@ -55,7 +51,7 @@ const EMPTY = {
   insurance_card_number: '' as string,
 };
 
-type TabKey = 'info' | 'tags' | 'attachments' | 'medical' | 'history';
+type TabKey = 'info' | 'tags' | 'history';
 
 export function LeadDetailModal({
   open,
@@ -74,8 +70,7 @@ export function LeadDetailModal({
   const [outcomeDialog, setOutcomeDialog] = useState<{ open: boolean; mode: 'won' | 'lost' }>({ open: false, mode: 'won' });
   const [tab, setTab] = useState<TabKey>('info');
 
-  const { data: vertical } = useCompanyVertical();
-  const isMedical = vertical === 'medical';
+  const isMedical = false;
   const { data: fullLead } = useFullLeadData(lead?.id || null);
   const { data: teamMembers } = useTeamMembers();
   const updateLead = useUpdateLead();
@@ -270,22 +265,6 @@ export function LeadDetailModal({
               )}
               {!isCreating && (
                 <TabsTrigger
-                  value="attachments"
-                  className="data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-none text-muted-foreground rounded-b-none rounded-t-md border border-transparent data-[state=active]:border-border data-[state=active]:border-b-card -mb-px px-3 py-2 text-xs font-medium gap-1.5"
-                >
-                  <Paperclip className="w-3.5 h-3.5 text-primary" /> Anexos
-                </TabsTrigger>
-              )}
-              {isMedical && (
-                <TabsTrigger
-                  value="medical"
-                  className="data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-none text-muted-foreground rounded-b-none rounded-t-md border border-transparent data-[state=active]:border-border data-[state=active]:border-b-card -mb-px px-3 py-2 text-xs font-medium gap-1.5"
-                >
-                  <Stethoscope className="w-3.5 h-3.5 text-primary" /> Dados Médicos
-                </TabsTrigger>
-              )}
-              {!isCreating && (
-                <TabsTrigger
                   value="history"
                   className="data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-none text-muted-foreground rounded-b-none rounded-t-md border border-transparent data-[state=active]:border-border data-[state=active]:border-b-card -mb-px px-3 py-2 text-xs font-medium gap-1.5"
                 >
@@ -321,40 +300,7 @@ export function LeadDetailModal({
             )}
 
             {!isCreating && (
-              <TabsContent value="attachments" className="m-0 px-5 py-5 space-y-5">
-                <LeadMedicalAttachmentsSection leadId={lead!.id} locked={isClosed} />
-              </TabsContent>
-            )}
 
-            {isMedical && (
-              <TabsContent value="medical" className="m-0 px-5 py-5 space-y-5">
-                <LeadMedicalCard
-                  values={{
-                    medical_doctor_id: edited.medical_doctor_id,
-                    medical_procedure_id: edited.medical_procedure_id,
-                    insurance_id: edited.insurance_id,
-                    facility_id: edited.facility_id,
-                    insurance_card_number: edited.insurance_card_number,
-                  }}
-                  onChange={(field, value) => updateField(field, value)}
-                  hideProcedure={!isCreating}
-                  disabled={!isCreating && isClosed}
-                />
-                {!isCreating && (
-                  <>
-                    <LeadProceduresSection leadId={lead!.id} locked={isClosed} />
-                    <LeadMedicalNotesSection leadId={lead!.id} locked={isClosed} />
-                  </>
-                )}
-                {isCreating && (
-                  <p className="text-xs text-muted-foreground">
-                    Procedimentos e notas clínicas ficam disponíveis após criar o lead.
-                  </p>
-                )}
-              </TabsContent>
-            )}
-
-            {!isCreating && (
               <TabsContent value="history" className="m-0 px-5 py-5 space-y-4">
                 <HistoryTab leadId={lead!.id} />
               </TabsContent>

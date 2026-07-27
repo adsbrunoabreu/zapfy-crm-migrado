@@ -69,11 +69,7 @@ import DemoDataCard from '@/components/settings/DemoDataCard';
 import TagsManager from '@/components/settings/TagsManager';
 import LossReasonsManager from '@/components/settings/LossReasonsManager';
 import LeadSourcesManager from '@/components/settings/LeadSourcesManager';
-import MedicalVerticalSettings from '@/components/settings/MedicalVerticalSettings';
 import NotificationPrefsCard from '@/components/settings/NotificationPrefsCard';
-import InsurancesManager from '@/components/settings/medical/InsurancesManager';
-import ProceduresManager from '@/components/settings/medical/ProceduresManager';
-import FacilitiesManager from '@/components/settings/medical/FacilitiesManager';
 import ProductsManager from '@/components/settings/ProductsManager';
 import { supabase } from '@/integrations/supabase/client';
 import { SettingsSkeleton } from '@/components/skeletons/PageSkeletons';
@@ -324,13 +320,6 @@ export default function Settings() {
     { id: 'professionals', label: 'Profissionais', icon: Stethoscope, render: () => <ProfessionalsSettings /> },
     { id: 'appointment-reasons', label: 'Motivos de agendamento', icon: CalendarClock, render: () => <ReasonsSettings /> },
   ];
-  if (isMedical) {
-    catalogs.push(
-      { id: 'insurances', label: 'Convênios', icon: ShieldPlus, medical: true, render: () => <InsurancesManager /> },
-      { id: 'procedures', label: 'Procedimentos', icon: ListTree, medical: true, render: () => <ProceduresManager /> },
-      { id: 'facilities', label: 'Hospitais & Clínicas', icon: Hospital, medical: true, render: () => <FacilitiesManager /> },
-    );
-  }
   const currentCatalog = catalogs.find((c) => c.id === activeCatalog) ?? catalogs[0];
 
   return (
@@ -596,14 +585,6 @@ export default function Settings() {
           <NotificationSoundSettings />
 
 
-          {/* Vertical médica: opt-in */}
-          <Card className="glass-card p-6 space-y-4">
-            <div className="flex items-center gap-2">
-              <Stethoscope className="w-5 h-5 text-primary" />
-              <h2 className="font-display text-lg font-semibold">Vertical / Clínica</h2>
-            </div>
-            <MedicalVerticalSettings />
-          </Card>
 
           {/* Zona de Perigo */}
           <Card className="glass-card p-6 border-destructive/30">

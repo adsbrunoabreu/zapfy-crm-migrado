@@ -18,7 +18,7 @@ const PresenceMount = () => {
   return null;
 };
 import { UIScaleProvider } from "@/contexts/UIScaleContext";
-import { MedicalProvider } from "@/contexts/MedicalContext";
+
 import { GlobalErrorBoundary } from "@/components/common/GlobalErrorBoundary";
 
 // Eager: rota pública / (LCP). Tudo o mais é lazy para não inflar o bundle inicial.
@@ -47,9 +47,6 @@ const Automations = lazy(lazyWithRetry(() => import("./pages/Automations")));
 const AutomationNotifications = lazy(lazyWithRetry(() => import("./pages/AutomationNotifications")));
 const Store = lazy(lazyWithRetry(() => import("./pages/Store")));
 const ProviderSetup = lazy(lazyWithRetry(() => import("./pages/Setup/ProviderSetup")));
-const MedicalDashboard = lazy(lazyWithRetry(() =>
-  import("@/components/medical/dashboard/MedicalDashboard").then((m) => ({ default: m.MedicalDashboard }))
-));
 
 const Team = lazy(lazyWithRetry(() => import("./pages/Team")));
 const Goals = lazy(lazyWithRetry(() => import("./pages/Goals")));
@@ -98,7 +95,7 @@ const App = () => (
     <UIScaleProvider>
     <AuthProvider>
       <PresenceMount />
-      <MedicalProvider>
+      
       <RealtimeProvider>
       <BrandingProvider>
       <TooltipProvider>
@@ -133,7 +130,7 @@ const App = () => (
                 <Route path="/oportunidades" element={<Navigate to="/pipelines?view=kanban" replace />} />
                 <Route path="/oportunidades/:pipelineId" element={<Navigate to="/pipelines?view=kanban" replace />} />
                 <Route path="/leads" element={<Navigate to="/pipelines?view=list" replace />} />
-                <Route path="/medical/dashboard" element={<MedicalDashboard />} />
+                
               </Route>
 
               <Route element={<RequireRole roles={['company_admin', 'user']} />}>
@@ -218,7 +215,7 @@ const App = () => (
       </TooltipProvider>
       </BrandingProvider>
       </RealtimeProvider>
-      </MedicalProvider>
+      
     </AuthProvider>
     </UIScaleProvider>
     </ThemeProvider>
