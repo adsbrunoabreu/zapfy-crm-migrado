@@ -1,0 +1,1 @@
+ALTER TABLE public.lead_distribution_users ADD COLUMN max_chats INTEGER DEFAULT NULL;

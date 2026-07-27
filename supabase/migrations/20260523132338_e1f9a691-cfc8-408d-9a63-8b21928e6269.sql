@@ -1,0 +1,13 @@
+ALTER FUNCTION public.appointments_block_in_progress_edits() SET search_path = public, pg_temp;
+ALTER FUNCTION public.br_phone_match_key(p text) SET search_path = public, pg_temp;
+ALTER FUNCTION public.chat_message_status_rank(_status text) SET search_path = public, pg_temp;
+ALTER FUNCTION public.contacts_before_update() SET search_path = public, pg_temp;
+ALTER FUNCTION public.contacts_normalize_phone(p text) SET search_path = public, pg_temp;
+ALTER FUNCTION public.lead_is_closed(_status text, _stage_type text) SET search_path = public, pg_temp;
+ALTER FUNCTION public.lead_is_lost(_status text, _stage_type text) SET search_path = public, pg_temp;
+ALTER FUNCTION public.lead_is_won(_status text, _stage_type text) SET search_path = public, pg_temp;
+ALTER FUNCTION public.lead_realized_value(_value numeric, _net_value numeric) SET search_path = public, pg_temp;
+ALTER FUNCTION public.prevent_chat_message_status_regression() SET search_path = public, pg_temp;
+ALTER FUNCTION public.prevent_lead_medical_notes_mutation() SET search_path = public, pg_temp;
+ALTER FUNCTION public.set_trial_ends_at() SET search_path = public, pg_temp;
+ALTER FUNCTION public.tg_hsm_var_mappings_touch() SET search_path = public, pg_temp;

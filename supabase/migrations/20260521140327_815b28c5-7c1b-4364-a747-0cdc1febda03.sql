@@ -1,0 +1,1 @@
+-- See file supabase/migrations/20260521130000_dates_in_sao_paulo_timezone.sql for the full text; sending verbatim.

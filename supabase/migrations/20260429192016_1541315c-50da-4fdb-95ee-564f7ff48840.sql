@@ -1,0 +1,1 @@
+ALTER TABLE public.team_invites ALTER COLUMN company_id DROP NOT NULL;

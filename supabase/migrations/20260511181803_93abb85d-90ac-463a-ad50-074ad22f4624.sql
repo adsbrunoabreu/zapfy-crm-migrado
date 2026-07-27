@@ -1,0 +1,1 @@
+revoke execute on function public.search_chat_history(text, text, text, timestamptz, timestamptz, boolean, int, int) from public, anon;

@@ -1,0 +1,1 @@
+ALTER FUNCTION public.team_missions_validate() SET search_path = public;

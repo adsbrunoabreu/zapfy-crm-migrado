@@ -1,0 +1,1 @@
+UPDATE public.companies SET asaas_customer_id = NULL WHERE asaas_customer_id = 'cus_000007966523';

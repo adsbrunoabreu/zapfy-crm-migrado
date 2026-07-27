@@ -1,0 +1,15 @@
+ALTER TABLE public.companies
+  ADD COLUMN IF NOT EXISTS legal_name text,
+  ADD COLUMN IF NOT EXISTS trade_name text,
+  ADD COLUMN IF NOT EXISTS cnpj text,
+  ADD COLUMN IF NOT EXISTS logo_url text,
+  ADD COLUMN IF NOT EXISTS email text,
+  ADD COLUMN IF NOT EXISTS phone text,
+  ADD COLUMN IF NOT EXISTS website text,
+  ADD COLUMN IF NOT EXISTS zip_code text,
+  ADD COLUMN IF NOT EXISTS address text,
+  ADD COLUMN IF NOT EXISTS address_number text,
+  ADD COLUMN IF NOT EXISTS address_complement text,
+  ADD COLUMN IF NOT EXISTS neighborhood text,
+  ADD COLUMN IF NOT EXISTS city text,
+  ADD COLUMN IF NOT EXISTS state text;

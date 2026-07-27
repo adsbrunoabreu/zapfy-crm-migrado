@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.enqueue_coexistence_history_chunk(uuid, uuid, int, int, jsonb) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.enqueue_coexistence_history_chunk(uuid, uuid, int, int, jsonb) TO service_role;

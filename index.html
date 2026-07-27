@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zapfy — O Zap da sua empresa, no automático.</title>
+    <meta name="description" content="Zapfy é o CRM brasileiro que mora no seu WhatsApp: centraliza conversas, qualifica leads com IA e fecha venda enquanto você dorme.">
+    <meta name="author" content="Zapfy" />
+
+    <!-- Performance: preconnect aos hosts críticos -->
+    <link rel="preconnect" href="https://bupzemhjqzjlbsgmcdti.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://bupzemhjqzjlbsgmcdti.supabase.co" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Zapfy — O Zap da sua empresa, no automático." />
+    <meta property="og:description" content="CRM brasileiro com WhatsApp + IA. Centralize conversas, qualifique leads e feche venda no Zap." />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@zapfy" />
+    <meta name="twitter:title" content="Zapfy — O Zap da sua empresa, no automático." />
+    <meta name="twitter:description" content="CRM brasileiro com WhatsApp + IA. Centralize conversas, qualifique leads e feche venda no Zap." />
+    <meta name="twitter:image" content="/og-image.jpg" />
+
+    <link rel="icon" href="/favicon.png?v=4" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
+  </head>
+
+  <body>
+    <div id="root">
+      <div id="boot-fallback" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#000;color:#f4f4f5;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;text-align:center;">
+        <div>
+          <div style="width:42px;height:42px;margin:0 auto 16px;border:2px solid rgba(59,130,246,.25);border-top-color:#3b82f6;border-radius:999px;animation:zapfy-spin .8s linear infinite;"></div>
+          <strong style="display:block;font-size:18px;margin-bottom:6px;">Carregando Zapfy…</strong>
+          <span style="color:#a1a1aa;font-size:14px;">Preparando o sistema.</span>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.__zapfyShowBootError = function (message) {
+        var root = document.getElementById('root');
+        if (!root) return;
+        root.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#000;color:#f4f4f5;font-family:system-ui,-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;padding:24px;text-align:center;"><div style="max-width:420px;border:1px solid #27272a;background:#09090b;border-radius:14px;padding:28px;"><strong style="display:block;font-size:20px;margin-bottom:8px;">Não foi possível carregar o sistema</strong><p style="margin:0 0 18px;color:#a1a1aa;font-size:14px;line-height:1.5;">Atualize a página para baixar a versão mais recente. Se continuar, entre em contato com o suporte.</p><button onclick="window.location.reload()" style="border:0;border-radius:10px;background:#3b82f6;color:#fff;font-weight:700;padding:11px 18px;cursor:pointer;">Recarregar</button><p style="margin:14px 0 0;color:#71717a;font-size:12px;word-break:break-word;">' + String(message || 'Erro de carregamento').slice(0, 180).replace(/[<>&]/g, '') + '</p></div></div>';
+      };
+      window.addEventListener('error', function (event) {
+        var target = event && event.target;
+        if (target && (target.tagName === 'SCRIPT' || target.tagName === 'LINK')) {
+          window.__zapfyShowBootError('Falha ao baixar arquivos do aplicativo.');
+        }
+      }, true);
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+    <style>@keyframes zapfy-spin{to{transform:rotate(360deg)}}</style>
+  </body>
+</html>

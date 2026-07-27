@@ -1,0 +1,4 @@
+COMMENT ON TABLE public.webhook_events_queue IS 'Intencional: RLS habilitado sem policies. Fila interna de eventos de webhook — acesso restrito a service_role/edge functions.';
+COMMENT ON TABLE public.chat_message_side_effects_queue IS 'Intencional: RLS habilitado sem policies. Fila interna de efeitos colaterais de chat_messages — acesso restrito a service_role e ao worker chat-messages-side-effects-worker.';
+COMMENT ON TABLE public.admin_action_attempts IS 'Intencional: RLS habilitado sem policies. Log de tentativas de ações administrativas — gravado e lido apenas pelo backend (service_role).';
+COMMENT ON TABLE public.whatsapp_lid_map IS 'Intencional: RLS habilitado sem policies. Mapeamento interno entre LIDs do WhatsApp e JIDs canônicos — manipulado apenas pelo evolution-proxy e workers (service_role).';

@@ -1,0 +1,1 @@
+ALTER TABLE public.companies ALTER COLUMN brand_palette SET DEFAULT 'azure';

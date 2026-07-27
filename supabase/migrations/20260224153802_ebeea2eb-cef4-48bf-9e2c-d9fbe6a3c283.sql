@@ -1,0 +1,2 @@
+
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS status text NOT NULL DEFAULT 'online';

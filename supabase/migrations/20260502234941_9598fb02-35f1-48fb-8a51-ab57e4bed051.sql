@@ -1,0 +1,1 @@
+ALTER TABLE public.conversations REPLICA IDENTITY FULL;

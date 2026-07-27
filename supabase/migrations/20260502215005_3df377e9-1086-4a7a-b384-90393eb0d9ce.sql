@@ -1,0 +1,2 @@
+ALTER TABLE public.attendance_auto_message_queue DROP CONSTRAINT attendance_auto_message_queue_status_check;
+ALTER TABLE public.attendance_auto_message_queue ADD CONSTRAINT attendance_auto_message_queue_status_check CHECK (status = ANY (ARRAY['pending'::text, 'processing'::text, 'done'::text, 'failed'::text, 'cancelled'::text]));

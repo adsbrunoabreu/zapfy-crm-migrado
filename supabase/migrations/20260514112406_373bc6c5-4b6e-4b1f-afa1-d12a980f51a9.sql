@@ -1,0 +1,1 @@
+UPDATE public.system_integrations SET value = jsonb_set(value, '{environment}', '"sandbox"') WHERE key = 'asaas';

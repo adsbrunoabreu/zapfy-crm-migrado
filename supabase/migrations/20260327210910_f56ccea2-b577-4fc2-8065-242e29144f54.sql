@@ -1,0 +1,1 @@
+ALTER TABLE public.leads ADD COLUMN name_manually_edited boolean NOT NULL DEFAULT false;

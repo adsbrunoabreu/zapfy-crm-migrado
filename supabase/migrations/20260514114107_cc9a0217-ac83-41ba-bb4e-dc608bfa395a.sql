@@ -1,0 +1,1 @@
+UPDATE public.system_integrations SET value = jsonb_set(value, '{enabled}', 'true'::jsonb), updated_at = now() WHERE key = 'asaas';
