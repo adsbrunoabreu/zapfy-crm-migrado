@@ -320,12 +320,6 @@ export default function Settings() {
     { id: 'professionals', label: 'Profissionais', icon: Stethoscope, render: () => <ProfessionalsSettings /> },
     { id: 'appointment-reasons', label: 'Motivos de agendamento', icon: CalendarClock, render: () => <ReasonsSettings /> },
   ];
-    catalogs.push(
-      { id: 'insurances', label: 'Convênios', icon: ShieldPlus, medical: true, render: () => <InsurancesManager /> },
-      { id: 'procedures', label: 'Procedimentos', icon: ListTree, medical: true, render: () => <ProceduresManager /> },
-      { id: 'facilities', label: 'Hospitais & Clínicas', icon: Hospital, medical: true, render: () => <FacilitiesManager /> },
-    );
-  }
   const currentCatalog = catalogs.find((c) => c.id === activeCatalog) ?? catalogs[0];
 
   return (
